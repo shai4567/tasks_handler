@@ -6,9 +6,9 @@ class tasksHandler:
         print(f"This is task1: {arg1} , {arg2}")
 
     def task2(self):
-        # Task 1 solution in here
+        # Task 2 solution in here
         print("This is task2")
 
     def task3(self):
-        # Task 1 solution in here
+        # Task 3 solution in here
         print("This is task3")

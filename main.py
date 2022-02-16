@@ -1,8 +1,6 @@
-# import foo
-# method_to_call = getattr(foo, 'bar')
-# result = method_to_call()
+import json
 from tasks_handler import tasksHandler
-from typing import List, Dict, Optional
+from typing import List, Dict, Optional, Union
 TASKS_HANDLER = None
 AVAILABLE_TASKS: List[str] = []
 
@@ -25,20 +23,30 @@ def get_tasks_prompt() -> int:
     return int(input(prompt + "\n\n"))
 
 
-def get_task_argument():
+def get_task_config(task_name: str):
     """
     Getting the list of arguments of the chosen task from config.json
     """
-    pass
+    config: Union[Dict] = None
+    with open("config.json") as content:
+        config = json.load(content)
+    if task_name in config.keys():
+        return config[task_name]
+    return None
 
 
 def main():
-    # todo: 1. define args in config.json to each function 2. README
+    # 2. README
     chosen_index = get_tasks_prompt()
     if chosen_index > len(AVAILABLE_TASKS):
         raise Exception("Non existed method has been chosen!")
-    args = ["testing1", "testing2"]  # todo check for args using config-file
-    result = getattr(TASKS_HANDLER, AVAILABLE_TASKS[chosen_index - 1])(*args)
+    task_config = get_task_config(AVAILABLE_TASKS[chosen_index - 1])
+    if task_config:
+        args = task_config["args"]  # todo check for args using config-file
+        result = getattr(
+            TASKS_HANDLER, AVAILABLE_TASKS[chosen_index - 1])(*args)
+    else:
+        result = getattr(TASKS_HANDLER, AVAILABLE_TASKS[chosen_index - 1])()
     return result
 
 
