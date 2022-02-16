@@ -40,13 +40,14 @@ def main():
     chosen_index = get_tasks_prompt()
     if chosen_index > len(AVAILABLE_TASKS):
         raise Exception("Non existed method has been chosen!")
-    task_config = get_task_config(AVAILABLE_TASKS[chosen_index - 1])
-    if task_config:
+    chosen_task = AVAILABLE_TASKS[chosen_index - 1]
+    task_config = get_task_config(chosen_task)
+    if task_config and "args" in task_config:
         args = task_config["args"]  # todo check for args using config-file
         result = getattr(
-            TASKS_HANDLER, AVAILABLE_TASKS[chosen_index - 1])(*args)
+            TASKS_HANDLER, chosen_task)(*args)
     else:
-        result = getattr(TASKS_HANDLER, AVAILABLE_TASKS[chosen_index - 1])()
+        result = getattr(TASKS_HANDLER, chosen_task)()
     return result
 
 
