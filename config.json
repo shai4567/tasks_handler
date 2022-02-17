@@ -1,5 +1,6 @@
 {
     "task1": {
-        "args": ["arg1", 35]
+        "args": [20, 35],
+        "desc": "Return the summary of 2 sent numbers"
     }
 }

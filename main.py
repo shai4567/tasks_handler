@@ -1,8 +1,10 @@
 import json
+import os
 from tasks_handler import tasksHandler
 from typing import List, Dict, Optional, Union
 TASKS_HANDLER = None
 AVAILABLE_TASKS: List[str] = []
+CONFIG: Union[Dict] = None
 
 
 def get_available_tasks() -> List[str]:
@@ -19,24 +21,34 @@ def get_tasks_prompt() -> int:
     AVAILABLE_TASKS = get_available_tasks()
     prompt = "Please insert desired task index:"
     for index, option in enumerate(AVAILABLE_TASKS):
-        prompt += f"\n {index + 1}. {option}"
+        task_description = ""
+        if option in CONFIG and "desc" in CONFIG[option]:
+            task_description = CONFIG[option]["desc"]
+        prompt += f"\n {index + 1}. {option}: {task_description}"
     return int(input(prompt + "\n\n"))
 
 
-def get_task_config(task_name: str):
+def init_config(config_path: str = "config.json"):
+    global CONFIG
+    if os.path.isfile(config_path):
+        with open(config_path) as content:
+            CONFIG = json.load(content)
+    else:
+        raise Exception(
+            "[ERROR] - Could not init config file: No such file or directory.")
+
+
+def get_task_config(task_name: str) -> Union[Dict]:
     """
     Getting the list of arguments of the chosen task from config.json
     """
-    config: Union[Dict] = None
-    with open("config.json") as content:
-        config = json.load(content)
-    if task_name in config.keys():
-        return config[task_name]
+    if task_name in CONFIG.keys():
+        return CONFIG[task_name]
     return None
 
 
 def main():
-    # 2. README
+    # TODO 2. README
     chosen_index = get_tasks_prompt()
     if chosen_index > len(AVAILABLE_TASKS):
         raise Exception("Non existed method has been chosen!")
@@ -46,11 +58,14 @@ def main():
         args = task_config["args"]  # todo check for args using config-file
         result = getattr(
             TASKS_HANDLER, chosen_task)(*args)
+        print(f"results are: {result}")
     else:
         result = getattr(TASKS_HANDLER, chosen_task)()
+        print(f"results are: {result}")
     return result
 
 
 if __name__ == "__main__":
     TASKS_HANDLER = tasksHandler()
+    init_config()
     main()
