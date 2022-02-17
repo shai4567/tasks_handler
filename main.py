@@ -57,14 +57,14 @@ def get_task_config(task_name: str) -> Union[Dict]:
 
 
 def main():
-    # TODO 2. README
     chosen_index = get_tasks_prompt()
     if chosen_index > len(AVAILABLE_TASKS):
         raise Exception("Non existed method has been chosen!")
     chosen_task = AVAILABLE_TASKS[chosen_index - 1]
     task_config = get_task_config(chosen_task)
     if task_config and "args" in task_config:
-        args = task_config["args"]  # todo check for args using config-file
+        args = task_config["args"]
+        print(f"Executing automatic preview run with sent arguments: {args}")
         result = getattr(
             TASKS_HANDLER, chosen_task)(*args)
         print(f"results are: {result}")
