@@ -8,6 +8,9 @@ CONFIG: Union[Dict] = None
 
 
 def get_available_tasks() -> List[str]:
+    """
+    Getting a list of all the available tasks
+    """
     options: List[str] = tasksHandler.__dir__(TASKS_HANDLER)
     results: List[str] = []
     for method in options:
@@ -17,6 +20,9 @@ def get_available_tasks() -> List[str]:
 
 
 def get_tasks_prompt() -> int:
+    """
+    Generating the prompt of the available tasks
+    """
     global AVAILABLE_TASKS
     AVAILABLE_TASKS = get_available_tasks()
     prompt = "Please insert desired task index:"
@@ -28,7 +34,10 @@ def get_tasks_prompt() -> int:
     return int(input(prompt + "\n\n"))
 
 
-def init_config(config_path: str = "config.json"):
+def init_config(config_path: str = "config.json") -> None:
+    """
+    Init the configuration file - default path: './config.json'
+    """
     global CONFIG
     if os.path.isfile(config_path):
         with open(config_path) as content:
