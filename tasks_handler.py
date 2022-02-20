@@ -1,7 +1,7 @@
 
 class tasksHandler:
 
-    def task1(self, arg1, arg2) -> int:
+    def task1(self, arg1: int, arg2: int) -> int:
         # Task 1 solution in here - for example sample task to summarize 2 numbers
         print(f"This task will return the summary of: {arg1} , {arg2}")
         return arg1 + arg2
