@@ -4,7 +4,7 @@ from tasks_handler import tasksHandler
 from typing import List, Dict, Optional, Union
 TASKS_HANDLER = None
 AVAILABLE_TASKS: List[str] = []
-CONFIG: Union[Dict] = None
+CONFIG: Optional[Dict] = None
 
 
 def get_available_tasks() -> List[str]:
@@ -47,7 +47,7 @@ def init_config(config_path: str = "config.json") -> None:
             "[ERROR] - Could not init config file: No such file or directory.")
 
 
-def get_task_config(task_name: str) -> Union[Dict]:
+def get_task_config(task_name: str) -> Optional[Dict]:
     """
     Getting the list of arguments of the chosen task from config.json
     """
